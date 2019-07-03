@@ -15,6 +15,7 @@ const backgroundColors = {
 	main: '#fafafa',
 	activeAnime: '#c7ff00',
 	inActiveAnime: '#ff0000',
+	strongBlue: '#b632d7',
 };
 
 export default {

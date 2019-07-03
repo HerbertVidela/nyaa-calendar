@@ -5,8 +5,7 @@ const Container = styled.View`
 	background-color: ${({ theme: { backgroundColors } }) =>
 		backgroundColors.main};
 	display: flex;
-	margin-top: 24px;
-	padding: 16px;
+	padding: 40px 16px 16px 16px;
 	min-height: 56px;
 
 	elevation: 3;

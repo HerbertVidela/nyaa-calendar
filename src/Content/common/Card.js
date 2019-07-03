@@ -3,29 +3,10 @@ import { oneOfType, element, node } from 'prop-types';
 import styled from 'styled-components/native';
 
 const Container = styled.View`
-	border-radius: 2px;
-	border-style: solid;
-	border-width: 0.5px;
-	border-image-source: linear-gradient(
-		to bottom,
-		rgba(0, 0, 0, 0),
-		rgba(0, 0, 0, 0) 80%,
-		rgba(0, 0, 0, 0.02) 95%,
-		rgba(0, 0, 0, 0.04)
-	);
-	border-image-slice: 1;
-	background-image: #ffffff,
-		linear-gradient(
-			to bottom,
-			rgba(0, 0, 0, 0),
-			rgba(0, 0, 0, 0) 80%,
-			rgba(0, 0, 0, 0.02) 95%,
-			rgba(0, 0, 0, 0.04)
-		);
-	background-origin: border-box;
-	background-clip: content-box, border-box;
+	background-color: white;
+	margin-bottom: 8px;
 
-	elevation: 2;
+	elevation: 5;
 	shadow-color: #000;
 	shadow-offset: 0px 2px;
 	shadow-opacity: 0.24;
@@ -33,6 +14,8 @@ const Container = styled.View`
 `;
 
 const SecondBoxShadow = styled.View`
+	background-color: white;
+
 	shadow-color: #000;
 	shadow-offset: 0px 0px;
 	shadow-opacity: 0.12;
