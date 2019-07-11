@@ -2,6 +2,12 @@ import React, { useEffect, useState } from 'react';
 import styled, { ThemeProvider } from 'styled-components/native';
 import { ActivityIndicator } from 'react-native';
 import * as Font from 'expo-font';
+import { ApolloClient } from 'apollo-client';
+import { createHttpLink } from 'apollo-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloProvider } from 'react-apollo';
+import { onError } from 'apollo-link-error';
+import { API_URL } from 'react-native-dotenv';
 import Header from './src/Header';
 import Content from './src/Content';
 import theme from './src/theme';
@@ -30,6 +36,27 @@ const loadFonts = async setFontsLoading => {
 	await setFontsLoading(false);
 };
 
+const httpLink = createHttpLink({ uri: 'http://10.2.8.25:4000/graphql' });
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+	if (graphQLErrors) {
+		graphQLErrors.map(({ message, locations, path }) =>
+			console.error(
+				`[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(
+					locations
+				)}, Path: ${path}`
+			)
+		);
+	}
+
+	if (networkError) console.error(`[Network error]: ${networkError}`);
+});
+const link = errorLink.concat(httpLink);
+
+const client = new ApolloClient({
+	link,
+	cache: new InMemoryCache(),
+});
+
 const App = () => {
 	const [fontsLoading, setFontsLoading] = useState(true);
 
@@ -44,10 +71,12 @@ const App = () => {
 					<ActivityIndicator size="large" color="#b632d7" />
 				</CenteredContainer>
 			) : (
-				<MainContainer>
-					<Header />
-					<Content date="June 21th" />
-				</MainContainer>
+				<ApolloProvider client={client}>
+					<MainContainer>
+						<Header />
+						<Content date={new Date()} />
+					</MainContainer>
+				</ApolloProvider>
 			)}
 		</ThemeProvider>
 	);

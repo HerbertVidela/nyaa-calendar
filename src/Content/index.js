@@ -1,6 +1,10 @@
 import React from 'react';
-import { string } from 'prop-types';
+import { object } from 'prop-types';
+import { Text } from 'react-native';
 import styled from 'styled-components/native';
+import { Query } from 'react-apollo';
+import format from 'date-fns/format';
+import { animesQuery } from '../queries';
 import AnimeList from './AnimeList';
 
 const Container = styled.View`
@@ -20,88 +24,22 @@ const Date = styled.Text`
 `;
 
 const propTypes = {
-	date: string,
+	date: object,
 };
-
-const animes = [
-	{
-		title: 'Boruto: Naruto Next Generations',
-		studios: ['Studio Pierrot'],
-		description:
-			"Naruto was a young shinobi with an incorrigible knack for mischief. He achieved his dream to become the greatest ninja in the village and his face sits atop the Hokage monument. But this is not his story... A new generation of ninja are ready to take the stage, led by Naruto's own son, Boruto!(Source: VIZ Media)",
-		imgURI:
-			'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx97938-BIvZdg4vLm03.jpg',
-		nyaaAvailability: true,
-		genres: ['Action', 'Adventure'],
-	},
-	{
-		title: 'Boruto: Naruto Next Generations 2',
-		studios: ['Studio Pierrot'],
-		description:
-			"Naruto was a young shinobi with an incorrigible knack for mischief. He achieved his dream to become the greatest ninja in the village and his face sits atop the Hokage monument. But this is not his story... A new generation of ninja are ready to take the stage, led by Naruto's own son, Boruto!(Source: VIZ Media)",
-		imgURI:
-			'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx97938-BIvZdg4vLm03.jpg',
-		nyaaAvailability: true,
-		genres: ['Action', 'Adventure'],
-	},
-	{
-		title: 'Boruto: Naruto Next Generations 3',
-		studios: ['Studio Pierrot'],
-		description:
-			"Naruto was a young shinobi with an incorrigible knack for mischief. He achieved his dream to become the greatest ninja in the village and his face sits atop the Hokage monument. But this is not his story... A new generation of ninja are ready to take the stage, led by Naruto's own son, Boruto!(Source: VIZ Media)",
-		imgURI:
-			'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx97938-BIvZdg4vLm03.jpg',
-		nyaaAvailability: true,
-		genres: ['Action', 'Adventure'],
-	},
-	{
-		title: 'Boruto: Naruto Next Generations 4',
-		studios: ['Studio Pierrot'],
-		description:
-			"Naruto was a young shinobi with an incorrigible knack for mischief. He achieved his dream to become the greatest ninja in the village and his face sits atop the Hokage monument. But this is not his story... A new generation of ninja are ready to take the stage, led by Naruto's own son, Boruto!(Source: VIZ Media)",
-		imgURI:
-			'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx97938-BIvZdg4vLm03.jpg',
-		nyaaAvailability: true,
-		genres: ['Action', 'Adventure'],
-	},
-	{
-		title: 'Boruto: Naruto Next Generations 5',
-		studios: ['Studio Pierrot'],
-		description:
-			"Naruto was a young shinobi with an incorrigible knack for mischief. He achieved his dream to become the greatest ninja in the village and his face sits atop the Hokage monument. But this is not his story... A new generation of ninja are ready to take the stage, led by Naruto's own son, Boruto!(Source: VIZ Media)",
-		imgURI:
-			'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx97938-BIvZdg4vLm03.jpg',
-		nyaaAvailability: true,
-		genres: ['Action', 'Adventure'],
-	},
-	{
-		title: 'Boruto: Naruto Next Generations 6',
-		studios: ['Studio Pierrot'],
-		description:
-			"Naruto was a young shinobi with an incorrigible knack for mischief. He achieved his dream to become the greatest ninja in the village and his face sits atop the Hokage monument. But this is not his story... A new generation of ninja are ready to take the stage, led by Naruto's own son, Boruto!(Source: VIZ Media)",
-		imgURI:
-			'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx97938-BIvZdg4vLm03.jpg',
-		nyaaAvailability: true,
-		genres: ['Action', 'Adventure'],
-	},
-	{
-		title: 'Boruto: Naruto Next Generations 7',
-		studios: ['Studio Pierrot'],
-		description:
-			"Naruto was a young shinobi with an incorrigible knack for mischief. He achieved his dream to become the greatest ninja in the village and his face sits atop the Hokage monument. But this is not his story... A new generation of ninja are ready to take the stage, led by Naruto's own son, Boruto!(Source: VIZ Media)",
-		imgURI:
-			'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx97938-BIvZdg4vLm03.jpg',
-		nyaaAvailability: true,
-		genres: ['Action', 'Adventure'],
-	},
-];
 
 const Content = ({ date }) => (
 	<Container>
 		<DateContainer>
-			<Date>{date}</Date>
+			<Date>{format(date, 'do MMMM')}</Date>
 		</DateContainer>
-		<AnimeList animes={animes} />
+		<Query
+			query={animesQuery}
+			variables={{ currentDate: format(date, 'dd-MM-yyyy') }}
+		>
+			{({ loading, data }) =>
+				loading ? <Text>Loading....</Text> : <AnimeList animes={data.animes} />
+			}
+		</Query>
 	</Container>
 );
 
