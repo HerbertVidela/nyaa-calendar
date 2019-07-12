@@ -78,7 +78,7 @@ const propTypes = {
 	title: string,
 	studios: arrayOf(string),
 	description: string,
-	imgURI: string,
+	imageURI: string,
 	nyaaAvailability: bool,
 	genres: arrayOf(string),
 };
@@ -87,13 +87,17 @@ const AnimeCard = ({
 	title,
 	studios,
 	description,
-	imgURI,
+	imageURI,
 	nyaaAvailability,
 	genres,
 }) => (
 	<Card>
 		<Container>
-			<Image source={{ uri: imgURI }} style={{ width: 114, height: 165 }} />
+			<Image
+				source={{ uri: imageURI }}
+				style={{ width: 114, height: 165 }}
+				resizeMethod="resize"
+			/>
 			<Anime>
 				<AnimeTitle>{title}</AnimeTitle>
 				<AnimeStudios>{studios.join(',')}</AnimeStudios>
