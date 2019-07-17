@@ -1,18 +1,18 @@
 import React from 'react';
-import { string, arrayOf, bool } from 'prop-types';
+import { string, arrayOf, bool, number } from 'prop-types';
 import { Image } from 'react-native';
 import styled from 'styled-components/native';
+import format from 'date-fns/format';
 import { Card } from './common';
 
 const Container = styled.View`
-	flex: 1;
+	flex: 0;
 	flex-direction: row;
 `;
 
 const Anime = styled.View`
-	flex: 1;
+	flex: -1;
 	padding: 12px;
-	flex-shrink: 1;
 `;
 
 const AnimeTitle = styled.Text`
@@ -23,13 +23,13 @@ const AnimeTitle = styled.Text`
 const AnimeStudios = styled.Text`
 	font-family: 'Roboto-Light';
 	font-size: ${({ theme: { fontSizes } }) => fontSizes.medium};
-	margin-bottom: 8px;
+	margin-bottom: 12px;
 `;
 
 const AnimeDescription = styled.Text`
 	font-family: 'Roboto-Light';
-	font-size: ${({ theme: { fontSizes } }) => fontSizes.xsmall};
-	margin-bottom: 8px;
+	font-size: ${({ theme: { fontSizes } }) => fontSizes.medium};
+	margin-bottom: 12px;
 `;
 
 const AnimeAvailability = styled.View`
@@ -76,8 +76,9 @@ const GenreText = styled.Text`
 
 const propTypes = {
 	title: string,
+	episode: number,
+	airingAt: number,
 	studios: arrayOf(string),
-	description: string,
 	imageURI: string,
 	nyaaAvailability: bool,
 	genres: arrayOf(string),
@@ -85,8 +86,9 @@ const propTypes = {
 
 const AnimeCard = ({
 	title,
+	episode,
+	airingAt,
 	studios,
-	description,
 	imageURI,
 	nyaaAvailability,
 	genres,
@@ -99,9 +101,13 @@ const AnimeCard = ({
 				resizeMethod="resize"
 			/>
 			<Anime>
-				<AnimeTitle>{title}</AnimeTitle>
-				<AnimeStudios>{studios.join(',')}</AnimeStudios>
-				<AnimeDescription>{description}</AnimeDescription>
+				<AnimeTitle>
+					{title} - Ep: {episode}
+				</AnimeTitle>
+				<AnimeStudios>{studios.join(',') || '-'}</AnimeStudios>
+				<AnimeDescription>
+					Airing at: {format(new Date(airingAt * 1000), 'hh:mm aaaa')}
+				</AnimeDescription>
 				<AnimeAvailability>
 					<AvailabilityText>Nyaa avaiable: </AvailabilityText>
 					<Circle availability={nyaaAvailability} />

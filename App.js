@@ -7,7 +7,6 @@ import { createHttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloProvider } from 'react-apollo';
 import { onError } from 'apollo-link-error';
-import { API_URL } from 'react-native-dotenv';
 import Header from './src/Header';
 import Content from './src/Content';
 import theme from './src/theme';
@@ -36,7 +35,7 @@ const loadFonts = async setFontsLoading => {
 	await setFontsLoading(false);
 };
 
-const httpLink = createHttpLink({ uri: 'http://192.168.1.65:4000/graphql' });
+const httpLink = createHttpLink({ uri: 'http://192.168.1.59:4000/graphql' });
 const errorLink = onError(({ graphQLErrors, networkError }) => {
 	if (graphQLErrors) {
 		graphQLErrors.map(({ message, locations, path }) =>
@@ -74,7 +73,7 @@ const App = () => {
 				<ApolloProvider client={client}>
 					<MainContainer>
 						<Header />
-						<Content date={new Date()} />
+						<Content currentDate={new Date()} />
 					</MainContainer>
 				</ApolloProvider>
 			)}
